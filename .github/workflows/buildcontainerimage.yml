@@ -26,9 +26,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: mysql_images
-        IMAGE_TAG: v0.2
+        IMAGE_TAG: v0.1
       run: |
-        cd sqldb/
+        cd MySQL/
         ls -ltra
         # Docker Build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -38,9 +38,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: webapp_images
-        IMAGE_TAG: v0.2
+        IMAGE_TAG: v0.1
       run: |
-        cd webapplication/
+        cd WebApp/
         ls -ltra
         # Docker Build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
