@@ -45,20 +45,3 @@ jobs:
         # Docker Build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker ps
-
-    - name: Publish WebApp Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        tags: webapp_images:${{ env.TAG_NAME }}
-        push: true
-        
-    - name: Publish MySQL Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        tags: mysql_images:${{ env.TAG_NAME }}
-        push: true
-
-env:
-  TAG_NAME: Islamiyat
