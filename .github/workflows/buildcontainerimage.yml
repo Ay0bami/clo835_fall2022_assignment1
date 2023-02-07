@@ -38,7 +38,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: webapp_images
-        IMAGE_TAG: v0.1
+        IMAGE_TAG: v0.2
       run: |
         cd WebApp/
         ls -ltra
