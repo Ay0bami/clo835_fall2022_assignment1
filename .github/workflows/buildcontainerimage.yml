@@ -12,12 +12,39 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+        AWS_REGION: us-east-1
 
-    - name: Build the Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: false
+    - name: Build MySQL Image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: mysql_images
+        IMAGE_TAG: v0.2
+      run: |
+        cd sqldb/
+        ls -ltra
+        # Docker Build
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker ps
+        
+    - name: Build WebApp Image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: webapp_images
+        IMAGE_TAG: v0.2
+      run: |
+        cd webapplication/
+        ls -ltra
+        # Docker Build
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker ps
 
     - name: Publish WebApp Image
       uses: docker/build-push-action@v2
