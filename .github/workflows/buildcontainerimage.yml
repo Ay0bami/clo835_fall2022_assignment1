@@ -1,0 +1,37 @@
+name: Build Container Image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build the Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: false
+
+    - name: Publish WebApp Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        tags: webapp_images:${{ env.TAG_NAME }}
+        push: true
+        
+    - name: Publish MySQL Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        tags: mysql_images:${{ env.TAG_NAME }}
+        push: true
+
+env:
+  TAG_NAME: Islamiyat
