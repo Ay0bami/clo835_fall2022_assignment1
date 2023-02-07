@@ -45,12 +45,12 @@ module "globalvars" {
   source = "../../modules/globalvars"
 }
 
-# Reference subnet provisioned by 01-Networking 
+# Instance 
 resource "aws_instance" "my_amazon" {
   ami                         = data.aws_ami.latest_amazon_linux.id
   instance_type               = lookup(var.instance_type, var.env)
   key_name                    = aws_key_pair.my_key.key_name
-  vpc_security_group_ids             = [aws_security_group.my_sg.id]
+  vpc_security_group_ids      = [aws_security_group.my_sg.id]
   associate_public_ip_address = false
 
   lifecycle {
@@ -136,9 +136,10 @@ resource "aws_eip" "static_eip" {
     }
   )
 }
-# Creating ecr repositories
+
+# Creating ecr repositories for Webapp
 resource "aws_ecr_repository" "webapp" {
-  name                 = "weapp_repo"
+  name                 = "webapp_images"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
@@ -146,8 +147,9 @@ resource "aws_ecr_repository" "webapp" {
   }
 }
 
-resource "aws_ecr_repository" "sql" {
-  name                 = "mysql_repo"
+# Creating ecr repositories for MySQL
+resource "aws_ecr_repository" "mysql" {
+  name                 = "mysql_images"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
