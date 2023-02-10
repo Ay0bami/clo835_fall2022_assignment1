@@ -1,3 +1,9 @@
+
+
+![This is an image](https://github.com/Ay0bami/clo835_fall2022_assignment1/blob/master/image.png)
+
+
+
 # Install the required MySQL package
 
 sudo apt-get update -y
